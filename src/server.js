@@ -161,7 +161,7 @@ function layout(title, body, opts = {}) {
 </head>
 <body>
   <header class="site-header">
-    <a class="brand" href="/"><span class="brand-mark" aria-hidden="true"></span> Meridian Supply</a>
+    <a class="brand" href="/"><span class="brand-mark" aria-hidden="true"></span> Cyber Security SQL Injection</a>
     <nav class="nav" aria-label="Primary">
       <a href="/">Home</a>
       <a class="nav--a" href="/insecure/login">Sign in · A</a>
@@ -182,7 +182,7 @@ function mountRoutes(app, { db, getOneBound, getAllBound, getOneRaw, getAllRaw }
   app.get("/", (req, res) => {
     res.type("html").send(
       layout(
-        "Meridian Supply — Internal",
+        "Cyber Security SQL Injection ",
         `
       <div class="panel">
         <h1>Internal portal</h1>
@@ -564,10 +564,14 @@ async function main() {
   );
   mountRoutes(app, ctx);
 
-  const host = "127.0.0.1";
   const port = Number(process.env.PORT) || 3648;
+  const host =
+    process.env.HOST ||
+    (process.env.RENDER || process.env.RAILWAY_ENVIRONMENT || process.env.FLY_APP_NAME
+      ? "0.0.0.0"
+      : "127.0.0.1");
   app.listen(port, host, () => {
-    console.log(`Meridian Supply (demo) at http://${host}:${port}`);
+    console.log(`Listening at http://${host}:${port}`);
   });
 }
 
@@ -575,6 +579,3 @@ main().catch((e) => {
   console.error(e);
   process.exit(1);
 });
-
-// Glued = your input is part of the sentence.
-//Fixed = the sentence is already written; your input only fills empty slots.

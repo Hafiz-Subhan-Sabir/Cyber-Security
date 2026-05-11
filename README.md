@@ -1,6 +1,8 @@
-# Meridian Supply — dual-stack demo (local only)
+# Meridian Supply — dual-stack demo
 
-Staging app with two parallel “sites”: **Site A** (legacy SQL construction) and **Site B** (parameterized + validated). Serves **127.0.0.1** only. Do not deploy Site A paths to the public internet.
+Staging app with two parallel “sites”: **Site A** (legacy SQL construction) and **Site B** (parameterized + validated). **Locally** it listens on `127.0.0.1` by default; on **Render** (and similar hosts) it binds to `0.0.0.0` and uses `PORT` automatically.
+
+**Warning:** Site A is intentionally unsafe. If you deploy publicly, anyone can probe it—use only for short demos, coursework scope, or keep the service private.
 
 ## Run
 
@@ -54,3 +56,31 @@ Reset data: `npm run init-db`, then restart the server.
 |-----------|------------------------|------------------------|
 | Sign-in   | `/insecure/login`      | `/secure/login`        |
 | Inventory | `/insecure/catalog`    | `/secure/catalog`      |
+
+## Deploy on Render (recommended for this repo)
+
+This app is a normal **Node + Express** server (`npm start`). [Render](https://render.com) web services match that well.
+
+1. Push this repo to GitHub (e.g. [Cyber-Security](https://github.com/Hafiz-Subhan-Sabir/Cyber-Security)).
+2. In Render: **New** → **Web Service** → connect the repo.
+3. Settings:
+   - **Runtime:** Node
+   - **Build command:** `npm install`
+   - **Start command:** `npm start`  
+     (`prestart` does nothing useful on Linux; on Windows it frees the port before start.)
+   - **Plan:** Free tier is OK for demos (expect cold starts).
+4. Deploy. Render sets **`PORT`** and **`RENDER`**; the server listens on **`0.0.0.0`** when `RENDER`, `RAILWAY_ENVIRONMENT`, or `FLY_APP_NAME` is set (see `src/server.js`).
+5. Open the URL Render shows (e.g. `https://your-service.onrender.com`).
+
+**Database:** `data/lab.sqlite` is on **ephemeral** disk unless you add a Render **persistent disk**—redeploys can reset data; missing DB is recreated on startup.
+
+**Security:** Site A is intentionally vulnerable. Public URLs invite probing; use for coursework windows only or keep access restricted.
+
+## Vercel (not a drop-in for this project)
+
+[Vercel](https://vercel.com) targets **serverless** workloads, not a classic long-running Express `app.listen()` server.
+
+- **As-is:** this repo is not suited to “Import repo → Deploy” on Vercel like Render.
+- **Possible with work:** refactor to export a serverless handler, adjust `sql.js` paths/lifecycle, accept cold starts—usually not worth it for this lab.
+
+Use **Render** (or Railway, Fly.io, a VPS) for this codebase; use **Vercel** for Next.js/static frontends or APIs already written as serverless functions.
