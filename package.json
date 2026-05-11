@@ -1,0 +1,16 @@
+{
+  "name": "sqli-learning-lab",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Local-only lab: vulnerable vs parameterized SQL (educational).",
+  "main": "src/server.js",
+  "scripts": {
+    "prestart": "node scripts/stop-listener.js",
+    "start": "node src/server.js",
+    "init-db": "node src/db.js"
+  },
+  "dependencies": {
+    "express": "^4.21.0",
+    "sql.js": "^1.12.0"
+  }
+}
