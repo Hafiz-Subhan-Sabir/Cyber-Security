@@ -575,3 +575,6 @@ main().catch((e) => {
   console.error(e);
   process.exit(1);
 });
+
+// Glued = your input is part of the sentence.
+//Fixed = the sentence is already written; your input only fills empty slots.
