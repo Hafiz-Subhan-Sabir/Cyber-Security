@@ -147,7 +147,7 @@ function siteACatalogPayloadAside() {
 
 function layout(title, body, opts = {}) {
   const scripts = opts.scripts
-    ? `<div id="toast" role="status" aria-live="polite"></div><script src="/ui.js" defer></script>`
+    ? `<div id="toast" role="status" aria-live="polite"></div><script src="/ui.js?v=3" defer></script>`
     : "";
 
   return `<!DOCTYPE html>
@@ -157,7 +157,10 @@ function layout(title, body, opts = {}) {
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>${escHtml(title)}</title>
   <!-- meridian-ui v2 -->
-  <link rel="stylesheet" href="/style.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/style.css?v=3"/>
 </head>
 <body>
   <header class="site-header">
@@ -557,8 +560,14 @@ async function main() {
   app.use(express.urlencoded({ extended: false }));
   app.use(
     express.static(path.join(__dirname, "..", "public"), {
-      setHeaders(res) {
+      setHeaders(res, filePath) {
         res.set("Cache-Control", "no-store, no-cache, must-revalidate");
+        if (filePath.endsWith(".css")) {
+          res.setHeader("Content-Type", "text/css; charset=utf-8");
+        }
+        if (filePath.endsWith(".js")) {
+          res.setHeader("Content-Type", "text/javascript; charset=utf-8");
+        }
       },
     })
   );

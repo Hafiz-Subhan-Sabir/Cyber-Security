@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap");
+/* Fonts load from <link> in HTML — avoid @import here (it blocks the whole file if Google is slow/blocked). */
 
 :root {
   --bg: #080a0e;
